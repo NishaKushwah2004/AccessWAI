@@ -13,7 +13,7 @@ To get started with AccessAI, clone the repository and install the necessary dep
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/NishaKushwah2004/AccessWAI
 
 # Navigate to the client directory
 cd client
