@@ -42,7 +42,8 @@ const Dashboard = () => {
       formData.append('project', file);
       formData.append('projectName', projectName);
 
-      const response = await fetch('http://localhost:5000/api/analysis/upload', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${API_BASE_URL}/api/analysis/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${user.token}`

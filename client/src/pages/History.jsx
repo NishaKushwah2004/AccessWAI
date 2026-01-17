@@ -12,7 +12,8 @@ const History = () => {
 
   const fetchHistory = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/analysis/history', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${API_BASE_URL}/api/analysis/history`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
