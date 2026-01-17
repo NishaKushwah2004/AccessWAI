@@ -12,7 +12,8 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://accesswai-1.onrender.com",
+  "https://accesswai-1.onrender.com", // Render frontend
+  "https://accesswai.vercel.app",     // Vercel frontend
 ];
 
 app.use(
