@@ -35,7 +35,7 @@ To run the application in development mode, use the following command:
 npm run dev
 ```
 
-Visit `http://localhost:3000` in your browser to access the application.
+Visit `http://accesswai.vercel.app` in your browser to access the application.
 
 ## Contributing
 Contributions are welcome! Please submit a pull request or open an issue to discuss changes.
