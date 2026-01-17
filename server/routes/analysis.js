@@ -3,6 +3,9 @@ import express from "express";
 const router = express.Router();
 import multer from "multer";
 import AdmZip from "adm-zip";
+import os from "os";
+import path from "path";
+import fs from "fs";
 import { protect } from "../middleware/auth.js";
 import Analysis from "../models/Analysis.js";
 import {
@@ -11,8 +14,17 @@ import {
 } from "../controllers/analysisController.js";
 
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      const dir = path.join(os.tmpdir(), "uploads");
+      fs.mkdirSync(dir, { recursive: true });
+      cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}-${file.originalname}`);
+    },
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
   fileFilter: (req, file, cb) => {
     if (
       file.mimetype === "application/zip" ||
@@ -36,13 +48,11 @@ router.post("/upload", protect, upload.single("project"), async (req, res) => {
 
     let zip;
     try {
-      zip = new AdmZip(req.file.buffer);
+      zip = new AdmZip(req.file.path);
     } catch (zipError) {
-      return res
-        .status(400)
-        .json({
-          message: "Invalid ZIP file. Please upload a valid ZIP archive.",
-        });
+      return res.status(400).json({
+        message: "Invalid ZIP file. Please upload a valid ZIP archive.",
+      });
     }
 
     const zipEntries = zip.getEntries();
@@ -65,12 +75,10 @@ router.post("/upload", protect, upload.single("project"), async (req, res) => {
     });
 
     if (files.length === 0) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "No HTML/JSX/JS/TS/TSX files found in the ZIP. Please upload a web project.",
-        });
+      return res.status(400).json({
+        message:
+          "No HTML/JSX/JS/TS/TSX files found in the ZIP. Please upload a web project.",
+      });
     }
 
     // Analyze files
@@ -106,6 +114,10 @@ router.post("/upload", protect, upload.single("project"), async (req, res) => {
       summary,
       accessibilityScore: Math.round(accessibilityScore),
       aiSuggestions,
+    });
+
+    fs.unlink(req.file.path, (err) => {
+      if (err) console.error("Failed to delete temp file:", err);
     });
 
     res.json(analysis);
