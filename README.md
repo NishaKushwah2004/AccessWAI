@@ -1,6 +1,6 @@
-# AccessAI
+# AccessWAI
 
-AccessAI is a web accessibility checker designed to ensure that web applications built with JavaScript, JSX, HTML, CSS, TypeScript, and TSX comply with the latest industry standards for accessibility. This tool helps developers identify and fix accessibility issues in their web applications, making them more inclusive for all users.
+AccessWAI is a web accessibility checker designed to ensure that web applications built with JavaScript, JSX, HTML, CSS, TypeScript, and TSX comply with the latest industry standards for accessibility. This tool helps developers identify and fix accessibility issues in their web applications, making them more inclusive for all users.
 
 ## Features
 - Comprehensive accessibility checks based on industry standards.
